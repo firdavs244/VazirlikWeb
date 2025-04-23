@@ -1,0 +1,7 @@
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/publish/VazirlikWeb
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/publish/appsettings.Development.json
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/publish/appsettings.json
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/publish/VazirlikWeb.dll
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/publish/VazirlikWeb.deps.json
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/publish/VazirlikWeb.runtimeconfig.json
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/publish/VazirlikWeb.pdb
