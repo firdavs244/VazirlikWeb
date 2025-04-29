@@ -1,0 +1,44 @@
+@model VazirlikWeb.Models.News
+
+@{
+    ViewData["Title"] = "Yangilik qo‘shish";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">📰 Yangilik qo‘shish</h2>
+    <div class="card shadow-sm rounded-3">
+        <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-bold">Sarlavha</label>
+                    <input asp-for="Title" class="form-control" placeholder="Yangilik sarlavhasini kiriting" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Content" class="form-label fw-bold">Mazmun</label>
+                    <textarea asp-for="Content" class="form-control" rows="4"
+                        placeholder="Yangilik matnini yozing"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ImageUrl" class="form-label fw-bold">Rasm havolasi (URL)</label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success px-4">💾 Saqlash</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">⬅️ Ro‘yxatga qaytish</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,40 @@
+@model VazirlikWeb.Models.News
+
+@{
+    ViewData["Title"] = "Yangilik tafsilotlari";
+}
+
+<div class="container mt-4">
+    <h2 class="text-info">📄 Yangilik tafsilotlari</h2>
+    <div class="card shadow-sm rounded-3 mt-3">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 fw-bold">Sarlavha</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+
+                <dt class="col-sm-3 fw-bold">Mazmun</dt>
+                <dd class="col-sm-9">@Model.Content</dd>
+
+                <dt class="col-sm-3 fw-bold">Yaratilgan sana</dt>
+                <dd class="col-sm-9">@Model.Date.ToString("dd-MM-yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3 fw-bold">Rasm havolasi</dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="Yangilik rasmi" class="img-fluid rounded"
+                            style="max-height:300px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Rasm mavjud emas</span>
+                    }
+                </dd>
+            </dl>
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning me-2">✏️ Tahrirlash</a>
+                <a asp-action="Index" class="btn btn-secondary">⬅️ Ro‘yxatga qaytish</a>
+            </div>
+        </div>
+    </div>
+</div>

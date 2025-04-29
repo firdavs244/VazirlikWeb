@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/VazirlikWeb.csproj": {}
+    "/app/VazirlikWeb.csproj": {}
   },
   "projects": {
-    "/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/VazirlikWeb.csproj": {
+    "/app/VazirlikWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/VazirlikWeb.csproj",
+        "projectUniqueName": "/app/VazirlikWeb.csproj",
         "projectName": "VazirlikWeb",
-        "projectPath": "/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/VazirlikWeb.csproj",
-        "packagesPath": "/home/firdavs/.nuget/packages/",
-        "outputPath": "/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/obj/",
+        "projectPath": "/app/VazirlikWeb.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/app/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/firdavs/.nuget/NuGet/NuGet.Config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -42,6 +42,36 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
