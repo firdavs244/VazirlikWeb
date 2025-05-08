@@ -3,22 +3,16 @@ version: "3.9"
 services:
   web:
     container_name: aspnet_mvc_app
-
-    # Bitta Dockerfile, lekin dev uchun target: dev
     build:
       context: .
       dockerfile: Dockerfile
       target: dev
-
-    # Dev muhitda live-reload uchun
     volumes:
       - .:/app
-      - ~/.nuget/packages:/root/.nuget/packages
-
+      - nuget_cache:/root/.nuget/packages
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-
     ports:
       - "8080:8080"
     depends_on:
@@ -58,3 +52,4 @@ services:
 
 volumes:
   pgdata:
+  nuget_cache:
