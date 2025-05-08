@@ -13,7 +13,7 @@ services:
     # Dev muhitda live-reload uchun
     volumes:
       - .:/app
-      - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ~/.nuget/packages:/root/.nuget/packages
 
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
