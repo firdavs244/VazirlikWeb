@@ -2,15 +2,14 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dev
 WORKDIR /app
 
-# Kodlarni konteynerga nusxalaymiz
+# dotnet ef tool ni o‘rnatamiz
+RUN dotnet tool install --global dotnet-ef \
+    && echo 'export PATH="$PATH:/root/.dotnet/tools"' >> ~/.bashrc
+ENV PATH="$PATH:/root/.dotnet/tools"
+
 COPY . .
-
-# Live-reload uchun port
 EXPOSE 8080
-
-# Dev environmentda dotnet watch bilan ishga tushadi
 CMD ["dotnet", "watch", "run", "--project", "VazirlikWeb.csproj", "--urls=http://0.0.0.0:8080"]
-
 
 # ——— Build Stage: SDK + Publish ———
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
