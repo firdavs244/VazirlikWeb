@@ -19,16 +19,15 @@ COPY . .
 RUN dotnet restore
 RUN dotnet publish VazirlikWeb.csproj -c Release -o /app/publish
 
-
 # ——— Final Stage: Runtime ———
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-# Faqat build qilingan fayllarni olib kelamiz
 COPY --from=build /app/publish .
 
-# Runtime port
-EXPOSE 8080
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-# Productionda shu buyruq bilan ishlaydi
-ENTRYPOINT ["dotnet", "VazirlikWeb.dll"]
+CMD ["/app/entrypoint.sh"]
+
+EXPOSE 8080

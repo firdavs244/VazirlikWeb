@@ -4,37 +4,143 @@
     ViewData["Title"] = "Yangilik tafsilotlari";
 }
 
-<div class="container mt-4">
-    <h2 class="text-info">📄 Yangilik tafsilotlari</h2>
-    <div class="card shadow-sm rounded-3 mt-3">
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3 fw-bold">Sarlavha</dt>
-                <dd class="col-sm-9">@Model.Title</dd>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Animated Header -->
+            <div class="d-flex align-items-center mb-4" data-aos="fade-right" data-aos-duration="800">
+                <div class="bg-info bg-gradient text-white rounded-circle p-3 me-3">
+                    <i class="fas fa-file-alt fa-2x"></i>
+                </div>
+                <h2 class="fw-bold text-info m-0">Yangilik tafsilotlari</h2>
+            </div>
 
-                <dt class="col-sm-3 fw-bold">Mazmun</dt>
-                <dd class="col-sm-9">@Model.Content</dd>
+            <!-- Main Content Card -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-5" data-aos="fade-up"
+                data-aos-duration="1000">
+                <!-- Image Section -->
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="position-relative card-img-top-container" style="height: 300px; overflow: hidden;">
+                        <img src="@Model.ImageUrl" alt="Yangilik rasmi" class="card-img-top w-100 h-100 object-fit-cover" />
+                        <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-dark bg-opacity-50 text-white">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <span>@Model.Date.ToString("dd MMMM yyyy, HH:mm")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
 
-                <dt class="col-sm-3 fw-bold">Yaratilgan sana</dt>
-                <dd class="col-sm-9">@Model.Date.ToString("dd-MM-yyyy HH:mm")</dd>
+                <!-- Content Section -->
+                <div class="card-body p-4 p-lg-5">
+                    <!-- Title -->
+                    <h1 class="card-title fs-2 fw-bold mb-4 text-primary">@Model.Title</h1>
 
-                <dt class="col-sm-3 fw-bold">Rasm havolasi</dt>
-                <dd class="col-sm-9">
-                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                    {
-                        <img src="@Model.ImageUrl" alt="Yangilik rasmi" class="img-fluid rounded"
-                            style="max-height:300px;" />
-                    }
-                    else
-                    {
-                        <span class="text-muted">Rasm mavjud emas</span>
-                    }
-                </dd>
-            </dl>
-            <div class="mt-4">
-                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning me-2">✏️ Tahrirlash</a>
-                <a asp-action="Index" class="btn btn-secondary">⬅️ Ro‘yxatga qaytish</a>
+                    <!-- Meta Info -->
+                    <div class="d-flex flex-wrap align-items-center gap-4 mb-4 pb-4 border-bottom">
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="far fa-clock me-2"></i>
+                            <span>@Model.Date.ToString("dd-MM-yyyy HH:mm")</span>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="far fa-image me-2"></i>
+                                <span>Rasm mavjud</span>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Content -->
+                    <div class="card-text fs-5 mb-5 news-content">
+                        @Html.Raw(Model.Content.Replace(Environment.NewLine, "<br />"))
+                    </div>
+
+                    <!-- Detail List -->
+                    <div class="bg-light rounded-4 p-4 mb-5">
+                        <h5 class="fw-bold mb-4 text-primary">
+                            <i class="fas fa-info-circle me-2"></i>Yangilik ma'lumotlari
+                        </h5>
+
+                        <dl class="row g-3 mb-0">
+                            <dt class="col-sm-3 fw-bold text-dark">
+                                <i class="fas fa-heading text-primary me-2"></i>Sarlavha
+                            </dt>
+                            <dd class="col-sm-9">@Model.Title</dd>
+
+                            <dt class="col-sm-3 fw-bold text-dark">
+                                <i class="fas fa-calendar-alt text-primary me-2"></i>Yaratilgan sana
+                            </dt>
+                            <dd class="col-sm-9">@Model.Date.ToString("dd-MM-yyyy HH:mm")</dd>
+
+                            <dt class="col-sm-3 fw-bold text-dark">
+                                <i class="fas fa-link text-primary me-2"></i>Rasm havolasi
+                            </dt>
+                            <dd class="col-sm-9">
+                                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                {
+                                    <a href="@Model.ImageUrl" target="_blank" class="text-info text-decoration-none">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Rasmni ochish
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary bg-opacity-25 text-secondary px-3 py-2 rounded-pill">
+                                        <i class="fas fa-image-slash me-1"></i>
+                                        Rasm mavjud emas
+                                    </span>
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mt-5" data-aos="fade-up"
+                        data-aos-delay="200">
+                        <a asp-action="Edit" asp-route-id="@Model?.Id"
+                            class="btn btn-warning btn-lg px-5 py-3 d-flex align-items-center justify-content-center shadow-sm">
+                            <i class="fas fa-edit me-2"></i>
+                            <span>Tahrirlash</span>
+                        </a>
+
+                        <a asp-action="Index"
+                            class="btn btn-outline-secondary btn-lg px-5 py-3 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            <span>Ro'yxatga qaytish</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .news-content {
+            line-height: 1.8;
+        }
+
+        .object-fit-cover {
+            object-fit: cover;
+        }
+
+        .card-text {
+            white-space: pre-line;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS animation library
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+    </script>
+}

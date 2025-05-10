@@ -1,30 +1,177 @@
 @model VazirlikWeb.Models.News
 
 @{
-    ViewData["Title"] = "Yangilikni o‘chirish";
+    ViewData["Title"] = "Yangilikni o'chirish";
 }
 
-<div class="container mt-4">
-    <h2 class="text-danger">🗑️ Yangilikni o‘chirish</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Animated Header -->
+            <div class="d-flex align-items-center mb-4" data-aos="fade-right" data-aos-duration="800">
+                <div class="bg-danger bg-gradient text-white rounded-circle p-3 me-3">
+                    <i class="fas fa-trash-alt fa-2x"></i>
+                </div>
+                <h2 class="fw-bold text-danger m-0">Yangilikni o'chirish</h2>
+            </div>
 
-    <div class="alert alert-warning mt-3 shadow-sm rounded-3">
-        <h5 class="mb-3">💬 Siz ushbu yangilikni o‘chirishni istaysizmi?</h5>
+            <!-- Confirmation Card -->
+            <div class="card shadow-lg border-0 rounded-4 mb-5" data-aos="fade-up" data-aos-duration="1000">
+                <!-- Warning Header -->
+                <div class="card-header bg-warning bg-opacity-10 border-0 py-4 px-4">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-warning text-white p-3 me-3">
+                            <i class="fas fa-exclamation-triangle fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-semibold text-warning mb-1">Diqqat!</h4>
+                            <p class="text-dark mb-0">Ushbu yangilikni o'chirishni istaysizmi?</p>
+                        </div>
+                    </div>
+                </div>
 
-        <dl class="row">
-            <dt class="col-sm-3">📌 Sarlavha</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+                <div class="card-body p-4">
+                    <!-- Preview Section -->
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="text-center mb-4 position-relative" data-aos="fade-up" data-aos-delay="200">
+                            <img src="@Model.ImageUrl" alt="Yangilik rasmi"
+                                class="img-fluid rounded-4 border border-2 border-light-subtle" style="max-height:200px;" />
+                            <div class="position-absolute top-0 end-0 mt-2 me-2">
+                                <span class="badge bg-danger px-3 py-2 rounded-pill">
+                                    <i class="fas fa-ban me-1"></i>O'chiriladi
+                                </span>
+                            </div>
+                        </div>
+                    }
 
-            <dt class="col-sm-3">📝 Mazmun</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Content)</dd>
+                    <!-- News Preview Box -->
+                    <div class="bg-light rounded-4 p-4 mb-4">
+                        <h3 class="fs-4 fw-bold text-primary mb-3 border-start border-4 border-danger ps-3">@Model.Title
+                        </h3>
 
-            <dt class="col-sm-3">🖼️ Rasm havolasi</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.ImageUrl)</dd>
-        </dl>
+                        <div class="mb-3 d-flex align-items-center text-muted small">
+                            <i class="far fa-calendar-alt me-2"></i>
+                            <span>@Model.Date.ToString("dd-MM-yyyy HH:mm")</span>
+                        </div>
 
-        <form asp-action="Delete" class="mt-4">
-            <input type="hidden" asp-for="Id" />
-            <button type="submit" class="btn btn-danger me-2">✅ Ha, o‘chirish</button>
-            <a asp-action="Index" class="btn btn-secondary">⬅️ Yo‘q, bekor qilish</a>
-        </form>
+                        <div class="news-content mb-0 text-truncate-3">
+                            @Model.Content
+                        </div>
+                    </div>
+
+                    <!-- Details List -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-header bg-light py-3">
+                            <h5 class="mb-0 text-danger">
+                                <i class="fas fa-info-circle me-2"></i>O'chirilayotgan ma'lumotlar
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <dl class="row g-0 mb-0">
+                                <dt class="col-sm-3 p-3 border-bottom border-end bg-light fw-semibold">
+                                    <i class="fas fa-tag text-danger me-2"></i>Sarlavha
+                                </dt>
+                                <dd class="col-sm-9 p-3 border-bottom">@Model.Title</dd>
+
+                                <dt class="col-sm-3 p-3 border-bottom border-end bg-light fw-semibold">
+                                    <i class="fas fa-align-left text-danger me-2"></i>Mazmun
+                                </dt>
+                                <dd class="col-sm-9 p-3 border-bottom text-truncate">@Model.Content</dd>
+
+                                <dt class="col-sm-3 p-3 border-bottom border-end bg-light fw-semibold">
+                                    <i class="fas fa-calendar text-danger me-2"></i>Sana
+                                </dt>
+                                <dd class="col-sm-9 p-3 border-bottom">@Model.Date.ToString("dd-MM-yyyy HH:mm")</dd>
+
+                                <dt class="col-sm-3 p-3 border-end bg-light fw-semibold">
+                                    <i class="fas fa-image text-danger me-2"></i>Rasm URL
+                                </dt>
+                                <dd class="col-sm-9 p-3">
+                                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                    {
+                                        <div class="text-truncate">
+                                            <i class="fas fa-link me-1 text-muted"></i>
+                                            <small>@Model.ImageUrl</small>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span
+                                            class="badge bg-secondary bg-opacity-25 text-secondary px-3 py-2 rounded-pill">
+                                            <i class="fas fa-ban me-1"></i>Rasm mavjud emas
+                                        </span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- Warning Message -->
+                    <div class="alert alert-danger border-0 shadow-sm rounded-4 d-flex" role="alert">
+                        <div class="me-3">
+                            <i class="fas fa-exclamation-circle fa-2x text-danger"></i>
+                        </div>
+                        <div>
+                            <h5 class="alert-heading fw-bold">Muhim ogohlantitrish!</h5>
+                            <p class="mb-0">Bu amal orqali ushbu yangilik butunlay o'chiriladi va uni qayta tiklab
+                                bo'lmaydi.</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <form asp-action="Delete" class="mt-5">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex flex-wrap gap-3 justify-content-center" data-aos="fade-up"
+                            data-aos-delay="200">
+                            <button type="submit"
+                                class="btn btn-danger btn-lg px-5 py-3 d-flex align-items-center shadow">
+                                <i class="fas fa-trash-alt me-2"></i>
+                                <span>Ha, o'chirish</span>
+                            </button>
+
+                            <a asp-action="Index"
+                                class="btn btn-outline-secondary btn-lg px-5 py-3 d-flex align-items-center">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                <span>Yo'q, bekor qilish</span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .text-truncate-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS animation library
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        // Add confirmation dialog
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form[asp-action="Delete"]');
+            form.addEventListener('submit', function (e) {
+                if (!confirm('Ushbu yangilikni o\'chirishni tasdiqlaysizmi?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}

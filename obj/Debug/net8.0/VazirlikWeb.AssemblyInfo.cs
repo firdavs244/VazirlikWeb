@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VazirlikWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37d3e421ffddf95d3cbede68eaba760b15b17453")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96732cb7a81d4a8bfd60bc790825903a0c458dcc")]
 [assembly: System.Reflection.AssemblyProductAttribute("VazirlikWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VazirlikWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

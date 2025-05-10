@@ -4,52 +4,71 @@
     ViewData["Title"] = "Yangiliklar";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="text-primary">📰 Yangiliklar ro‘yxati</h2>
-        <a asp-action="Create" class="btn btn-success">
-            ➕ Yangi qo‘shish
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">📰 Yangiliklar ro'yxati</h2>
+        <a asp-action="Create" class="btn btn-success px-4 py-2 fw-bold">
+            ➕ Yangi qo'shish
         </a>
     </div>
 
-    <table class="table table-hover shadow rounded bg-white">
-        <thead class="table-dark">
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.Title)</th>
-                <th>@Html.DisplayNameFor(model => model.Content)</th>
-                <th>@Html.DisplayNameFor(model => model.Date)</th>
-                <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
-                <th>⚙️ Amallar</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered shadow-sm rounded-lg bg-white">
+            <thead class="table-dark">
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                    <td>
-                        @item.Content?.Length > 100
-                        ? @item.Content.Substring(0, 100) + "..."
-                        : @item.Content
-                    </td>
-                    <td>@item.Date.ToShortDateString()</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.ImageUrl))
-                        {
-                            <img src="@item.ImageUrl" alt="Rasm" style="width: 80px; height: auto; border-radius: 8px;" />
-                        }
-                        else
-                        {
-                            <span class="text-muted">Rasm yo‘q</span>
-                        }
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1">✏️ Tahrirlash</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1">🔍 Ko‘rish</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">🗑️ O‘chirish</a>
-                    </td>
+                    <th>@Html.DisplayNameFor(model => model.Title)</th>
+                    <th>@Html.DisplayNameFor(model => model.Content)</th>
+                    <th>@Html.DisplayNameFor(model => model.Date)</th>
+                    <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
+                    <th>⚙️ Amallar</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="align-middle">
+                        <td class="fw-semibold">@Html.DisplayFor(modelItem => item.Title)</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Content) && item.Content.Length > 100)
+                            {
+                                @(item.Content.Substring(0, 100) + "...")
+                            }
+                            else
+                            {
+                                @item.Content
+                            }
+                        </td>
+                        <td>@item.Date.ToString("dd MMM yyyy")</td>
+                        <td class="text-center">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" alt="Rasm" class="img-fluid"
+                                    style="max-width: 80px; border-radius: 8px;" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">Rasm yo'q</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-around">
+                                <a asp-action="Edit" asp-route-id="@item.Id"
+                                    class="btn btn-sm btn-warning text-white px-3 py-2 me-2" title="Tahrirlash">
+                                    ✏️
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id"
+                                    class="btn btn-sm btn-info text-white px-3 py-2 me-2" title="Ko'rish">
+                                    🔍
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"
+                                    class="btn btn-sm btn-danger text-white px-3 py-2" title="O'chirish">
+                                    🗑️
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -1,38 +1,86 @@
 @model VazirlikWeb.Models.News
 
 @{
-    ViewData["Title"] = "Yangilik qo‘shish";
+    ViewData["Title"] = "Yangilik qo'shish";
 }
 
-<div class="container mt-4">
-    <h2 class="mb-4 text-primary">📰 Yangilik qo‘shish</h2>
-    <div class="card shadow-sm rounded-3">
-        <div class="card-body">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Page Header with Animation -->
+            <div class="d-flex align-items-center mb-4" data-aos="fade-right" data-aos-duration="800">
+                <div class="bg-primary bg-gradient text-white rounded-circle p-3 me-3">
+                    <i class="fas fa-newspaper fa-2x"></i>
+                </div>
+                <h2 class="fw-bold text-primary m-0">Yangilik qo'shish</h2>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="Title" class="form-label fw-bold">Sarlavha</label>
-                    <input asp-for="Title" class="form-control" placeholder="Yangilik sarlavhasini kiriting" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+            <!-- Card with Animation -->
+            <div class="card shadow-lg border-0 rounded-4 mb-5" data-aos="fade-up" data-aos-duration="1000">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="text-primary fw-semibold">
+                        <i class="fas fa-plus-circle me-2"></i>Yangi maqola yaratish
+                    </h5>
+                    <p class="text-muted mb-0">Barcha kerakli ma'lumotlarni to'ldiring</p>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Content" class="form-label fw-bold">Mazmun</label>
-                    <textarea asp-for="Content" class="form-control" rows="4"
-                        placeholder="Yangilik matnini yozing"></textarea>
-                    <span asp-validation-for="Content" class="text-danger"></span>
-                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" class="needs-validation">
+                        <div asp-validation-summary="ModelOnly"
+                            class="alert alert-danger rounded-3 border-0 shadow-sm mb-4" role="alert"></div>
 
-                <div class="mb-3">
-                    <label asp-for="ImageUrl" class="form-label fw-bold">Rasm havolasi (URL)</label>
-                    <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                </div>
+                        <div class="mb-4">
+                            <label asp-for="Title" class="form-label fw-semibold">
+                                <i class="fas fa-heading me-2 text-primary"></i>Sarlavha
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0">
+                                    <i class="fas fa-edit text-primary"></i>
+                                </span>
+                                <input asp-for="Title"
+                                    class="form-control form-control-lg border-0 bg-light shadow-none"
+                                    placeholder="Yangilik sarlavhasini kiriting" />
+                            </div>
+                            <span asp-validation-for="Title" class="text-danger small mt-1 d-block"></span>
+                        </div>
 
-                <button type="submit" class="btn btn-success px-4">💾 Saqlash</button>
-                <a asp-action="Index" class="btn btn-secondary ms-2">⬅️ Ro‘yxatga qaytish</a>
-            </form>
+                        <div class="mb-4">
+                            <label asp-for="Content" class="form-label fw-semibold">
+                                <i class="fas fa-align-left me-2 text-primary"></i>Mazmun
+                            </label>
+                            <textarea asp-for="Content"
+                                class="form-control form-control-lg border-0 bg-light shadow-none" rows="6"
+                                placeholder="Yangilik matnini batafsil yozing"></textarea>
+                            <span asp-validation-for="Content" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ImageUrl" class="form-label fw-semibold">
+                                <i class="fas fa-image me-2 text-primary"></i>Rasm havolasi
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0">
+                                    <i class="fas fa-link text-primary"></i>
+                                </span>
+                                <input asp-for="ImageUrl"
+                                    class="form-control form-control-lg border-0 bg-light shadow-none"
+                                    placeholder="https://..." />
+                            </div>
+                            <span asp-validation-for="ImageUrl" class="text-danger small mt-1 d-block"></span>
+                            <small class="text-muted">Yangilik uchun rasm URL manzilini kiriting</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between gap-3 mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3 shadow-sm w-100">
+                                <i class="fas fa-save me-2"></i>Saqlash
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-5 py-3 w-100">
+                                <i class="fas fa-arrow-left me-2"></i>Ro'yxatga qaytish
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -41,4 +89,30 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS animation library
+        AOS.init({
+            once: true
+        });
+
+        // Form validation enhancements
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const inputs = form.querySelectorAll('input, textarea');
+
+            inputs.forEach(input => {
+                input.addEventListener('focus', function () {
+                    this.closest('.input-group')?.classList.add('shadow-sm');
+                    this.classList.add('border-primary');
+                });
+
+                input.addEventListener('blur', function () {
+                    this.closest('.input-group')?.classList.remove('shadow-sm');
+                    this.classList.remove('border-primary');
+                });
+            });
+        });
+    </script>
 }

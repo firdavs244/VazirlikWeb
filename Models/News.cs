@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VazirlikWeb.Models
 {
@@ -7,14 +8,15 @@ namespace VazirlikWeb.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        public string Title { get; set; }
+        [Required(ErrorMessage = "Sarlavha kiritilishi shart.")]
+        public string Title { get; set; } = string.Empty; // Default qiymatni qo‘shish
 
-        [Required]
-        public string Content { get; set; }
+        [Required(ErrorMessage = "Kontent bo‘sh bo‘lmasligi kerak.")]
+        public string Content { get; set; } = string.Empty; // Default qiymatni qo‘shish
 
-        public DateTime Date { get; set; } = DateTime.Now;
+        [Column(TypeName = "timestamp with time zone")]
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
-        public string? ImageUrl { get; set; } // agar rasm bo‘lsa
+        public string? ImageUrl { get; set; }
     }
 }
