@@ -1,0 +1,200 @@
+.
+├── Controllers
+│   ├── HomeController.cs
+│   └── NewsController.cs
+├── Data
+│   └── ApplicationDbContext.cs
+├── Dockerfile
+├── Migrations
+│   ├── 20250429181406_CreateNewsTable.Designer.cs
+│   ├── 20250429181406_CreateNewsTable.cs
+│   └── ApplicationDbContextModelSnapshot.cs
+├── Models
+│   ├── ErrorViewModel.cs
+│   └── News.cs
+├── Program.cs
+├── Properties
+│   └── launchSettings.json
+├── VazirlikWeb.csproj
+├── VazirlikWeb.sln
+├── Views
+│   ├── Home
+│   │   ├── Index.cshtml
+│   │   └── Privacy.cshtml
+│   ├── News
+│   │   ├── Create.cshtml
+│   │   ├── Delete.cshtml
+│   │   ├── Details.cshtml
+│   │   ├── Edit.cshtml
+│   │   └── Index.cshtml
+│   ├── Shared
+│   │   ├── Error.cshtml
+│   │   ├── _Layout.cshtml
+│   │   ├── _Layout.cshtml.css
+│   │   └── _ValidationScriptsPartial.cshtml
+│   ├── _ViewImports.cshtml
+│   └── _ViewStart.cshtml
+├── appsettings.Development.json
+├── appsettings.json
+├── docker-compose.yaml
+├── entrypoint.sh
+├── nginx.conf
+├── project-structure.txt
+├── publish
+│   ├── VazirlikWeb
+│   ├── VazirlikWeb.deps.json
+│   ├── VazirlikWeb.dll
+│   ├── VazirlikWeb.pdb
+│   ├── VazirlikWeb.runtimeconfig.json
+│   ├── appsettings.Development.json
+│   ├── appsettings.json
+│   ├── web.config
+│   └── wwwroot
+│       ├── VazirlikWeb.styles.css
+│       ├── css
+│       │   └── site.css
+│       ├── favicon.ico
+│       ├── js
+│       │   └── site.js
+│       └── lib
+│           ├── bootstrap
+│           │   ├── LICENSE
+│           │   └── dist
+│           │       ├── css
+│           │       │   ├── bootstrap-grid.css
+│           │       │   ├── bootstrap-grid.css.map
+│           │       │   ├── bootstrap-grid.min.css
+│           │       │   ├── bootstrap-grid.min.css.map
+│           │       │   ├── bootstrap-grid.rtl.css
+│           │       │   ├── bootstrap-grid.rtl.css.map
+│           │       │   ├── bootstrap-grid.rtl.min.css
+│           │       │   ├── bootstrap-grid.rtl.min.css.map
+│           │       │   ├── bootstrap-reboot.css
+│           │       │   ├── bootstrap-reboot.css.map
+│           │       │   ├── bootstrap-reboot.min.css
+│           │       │   ├── bootstrap-reboot.min.css.map
+│           │       │   ├── bootstrap-reboot.rtl.css
+│           │       │   ├── bootstrap-reboot.rtl.css.map
+│           │       │   ├── bootstrap-reboot.rtl.min.css
+│           │       │   ├── bootstrap-reboot.rtl.min.css.map
+│           │       │   ├── bootstrap-utilities.css
+│           │       │   ├── bootstrap-utilities.css.map
+│           │       │   ├── bootstrap-utilities.min.css
+│           │       │   ├── bootstrap-utilities.min.css.map
+│           │       │   ├── bootstrap-utilities.rtl.css
+│           │       │   ├── bootstrap-utilities.rtl.css.map
+│           │       │   ├── bootstrap-utilities.rtl.min.css
+│           │       │   ├── bootstrap-utilities.rtl.min.css.map
+│           │       │   ├── bootstrap.css
+│           │       │   ├── bootstrap.css.map
+│           │       │   ├── bootstrap.min.css
+│           │       │   ├── bootstrap.min.css.map
+│           │       │   ├── bootstrap.rtl.css
+│           │       │   ├── bootstrap.rtl.css.map
+│           │       │   ├── bootstrap.rtl.min.css
+│           │       │   └── bootstrap.rtl.min.css.map
+│           │       └── js
+│           │           ├── bootstrap.bundle.js
+│           │           ├── bootstrap.bundle.js.map
+│           │           ├── bootstrap.bundle.min.js
+│           │           ├── bootstrap.bundle.min.js.map
+│           │           ├── bootstrap.esm.js
+│           │           ├── bootstrap.esm.js.map
+│           │           ├── bootstrap.esm.min.js
+│           │           ├── bootstrap.esm.min.js.map
+│           │           ├── bootstrap.js
+│           │           ├── bootstrap.js.map
+│           │           ├── bootstrap.min.js
+│           │           └── bootstrap.min.js.map
+│           ├── jquery
+│           │   ├── LICENSE.txt
+│           │   └── dist
+│           │       ├── jquery.js
+│           │       ├── jquery.min.js
+│           │       └── jquery.min.map
+│           ├── jquery-validation
+│           │   ├── LICENSE.md
+│           │   └── dist
+│           │       ├── additional-methods.js
+│           │       ├── additional-methods.min.js
+│           │       ├── jquery.validate.js
+│           │       └── jquery.validate.min.js
+│           └── jquery-validation-unobtrusive
+│               ├── LICENSE.txt
+│               ├── jquery.validate.unobtrusive.js
+│               └── jquery.validate.unobtrusive.min.js
+└── wwwroot
+    ├── css
+    │   └── site.css
+    ├── favicon.ico
+    ├── js
+    │   └── site.js
+    └── lib
+        ├── bootstrap
+        │   ├── LICENSE
+        │   └── dist
+        │       ├── css
+        │       │   ├── bootstrap-grid.css
+        │       │   ├── bootstrap-grid.css.map
+        │       │   ├── bootstrap-grid.min.css
+        │       │   ├── bootstrap-grid.min.css.map
+        │       │   ├── bootstrap-grid.rtl.css
+        │       │   ├── bootstrap-grid.rtl.css.map
+        │       │   ├── bootstrap-grid.rtl.min.css
+        │       │   ├── bootstrap-grid.rtl.min.css.map
+        │       │   ├── bootstrap-reboot.css
+        │       │   ├── bootstrap-reboot.css.map
+        │       │   ├── bootstrap-reboot.min.css
+        │       │   ├── bootstrap-reboot.min.css.map
+        │       │   ├── bootstrap-reboot.rtl.css
+        │       │   ├── bootstrap-reboot.rtl.css.map
+        │       │   ├── bootstrap-reboot.rtl.min.css
+        │       │   ├── bootstrap-reboot.rtl.min.css.map
+        │       │   ├── bootstrap-utilities.css
+        │       │   ├── bootstrap-utilities.css.map
+        │       │   ├── bootstrap-utilities.min.css
+        │       │   ├── bootstrap-utilities.min.css.map
+        │       │   ├── bootstrap-utilities.rtl.css
+        │       │   ├── bootstrap-utilities.rtl.css.map
+        │       │   ├── bootstrap-utilities.rtl.min.css
+        │       │   ├── bootstrap-utilities.rtl.min.css.map
+        │       │   ├── bootstrap.css
+        │       │   ├── bootstrap.css.map
+        │       │   ├── bootstrap.min.css
+        │       │   ├── bootstrap.min.css.map
+        │       │   ├── bootstrap.rtl.css
+        │       │   ├── bootstrap.rtl.css.map
+        │       │   ├── bootstrap.rtl.min.css
+        │       │   └── bootstrap.rtl.min.css.map
+        │       └── js
+        │           ├── bootstrap.bundle.js
+        │           ├── bootstrap.bundle.js.map
+        │           ├── bootstrap.bundle.min.js
+        │           ├── bootstrap.bundle.min.js.map
+        │           ├── bootstrap.esm.js
+        │           ├── bootstrap.esm.js.map
+        │           ├── bootstrap.esm.min.js
+        │           ├── bootstrap.esm.min.js.map
+        │           ├── bootstrap.js
+        │           ├── bootstrap.js.map
+        │           ├── bootstrap.min.js
+        │           └── bootstrap.min.js.map
+        ├── jquery
+        │   ├── LICENSE.txt
+        │   └── dist
+        │       ├── jquery.js
+        │       ├── jquery.min.js
+        │       └── jquery.min.map
+        ├── jquery-validation
+        │   ├── LICENSE.md
+        │   └── dist
+        │       ├── additional-methods.js
+        │       ├── additional-methods.min.js
+        │       ├── jquery.validate.js
+        │       └── jquery.validate.min.js
+        └── jquery-validation-unobtrusive
+            ├── LICENSE.txt
+            ├── jquery.validate.unobtrusive.js
+            └── jquery.validate.unobtrusive.min.js
+
+37 directories, 161 files

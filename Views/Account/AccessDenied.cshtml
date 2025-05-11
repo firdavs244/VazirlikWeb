@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Kirish ta'qiqlangan";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h2>@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body text-center">
+                <i class="bi bi-shield-lock fs-1 text-danger mb-3"></i>
+                <h3 class="mb-3">Bu sahifani ko'rish uchun huquqingiz yo'q.</h3>
+                <p class="mb-4">Bu sahifani ko'rish uchun sizda kerakli ruxsatlar mavjud emas.</p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Bosh sahifaga qaytish</a>
+            </div>
+        </div>
+    </div>
+</div>

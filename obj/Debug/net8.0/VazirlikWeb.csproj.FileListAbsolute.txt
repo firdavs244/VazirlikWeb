@@ -566,3 +566,9 @@
 /app/obj/Debug/net8.0/VazirlikWeb.pdb
 /app/obj/Debug/net8.0/VazirlikWeb.genruntimeconfig.cache
 /app/obj/Debug/net8.0/ref/VazirlikWeb.dll
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.UI.dll
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/obj/Debug/net8.0/VazirlikWeb.MvcApplicationPartsAssemblyInfo.cs
+/app/obj/Debug/net8.0/VazirlikWeb.MvcApplicationPartsAssemblyInfo.cs
+/app/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/app/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.UI.dll

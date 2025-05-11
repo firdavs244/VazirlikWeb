@@ -1,0 +1,40 @@
+@model VazirlikWeb.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Foydalanuvchini o'chirish";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h2>@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body">
+                <h3>Haqiqatan ham bu foydalanuvchini o'chirishni xohlaysizmi?</h3>
+                <div class="alert alert-warning">
+                    <p>Bu amalni qaytarib bo'lmaydi!</p>
+                </div>
+
+                <dl class="row">
+                    <dt class="col-sm-4">Ism:</dt>
+                    <dd class="col-sm-8">@Model.FirstName</dd>
+
+                    <dt class="col-sm-4">Familiya:</dt>
+                    <dd class="col-sm-8">@Model.LastName</dd>
+
+                    <dt class="col-sm-4">Email:</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+                </dl>
+
+                <form asp-action="DeleteUser" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="form-group d-flex justify-content-between mt-4">
+                        <a asp-action="UserManagement" class="btn btn-secondary">Bekor qilish</a>
+                        <button type="submit" class="btn btn-danger">O'chirish</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

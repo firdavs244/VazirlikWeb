@@ -20,7 +20,7 @@
                     <th>@Html.DisplayNameFor(model => model.Content)</th>
                     <th>@Html.DisplayNameFor(model => model.Date)</th>
                     <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
-                    <th>⚙️ Amallar</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,17 +52,9 @@
                         </td>
                         <td>
                             <div class="d-flex justify-content-around">
-                                <a asp-action="Edit" asp-route-id="@item.Id"
-                                    class="btn btn-sm btn-warning text-white px-3 py-2 me-2" title="Tahrirlash">
-                                    ✏️
-                                </a>
                                 <a asp-action="Details" asp-route-id="@item.Id"
                                     class="btn btn-sm btn-info text-white px-3 py-2 me-2" title="Ko'rish">
                                     🔍
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@item.Id"
-                                    class="btn btn-sm btn-danger text-white px-3 py-2" title="O'chirish">
-                                    🗑️
                                 </a>
                             </div>
                         </td>

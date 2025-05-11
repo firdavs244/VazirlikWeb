@@ -1,0 +1,58 @@
+@model VazirlikWeb.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Profil";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Shaxsiy ma'lumotlar</h4>
+                        <hr />
+                        <dl class="row">
+                            <dt class="col-sm-4">Ism:</dt>
+                            <dd class="col-sm-8">@Model.FirstName</dd>
+
+                            <dt class="col-sm-4">Familiya:</dt>
+                            <dd class="col-sm-8">@Model.LastName</dd>
+
+                            <dt class="col-sm-4">Email:</dt>
+                            <dd class="col-sm-8">@Model.Email</dd>
+
+                            <dt class="col-sm-4">Ro'yxatdan o'tgan sana:</dt>
+                            <dd class="col-sm-8">@Model.Created.ToString("dd.MM.yyyy HH:mm")</dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h4>Harakatlar</h4>
+                        <hr />
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a asp-action="EditProfile" class="btn btn-outline-primary w-100">Profilni
+                                    tahrirlash</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a asp-action="ChangePassword" class="btn btn-outline-primary w-100">Parolni
+                                    o'zgartirish</a>
+                            </li>
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <li class="list-group-item">
+                                    <a asp-action="UserManagement" class="btn btn-outline-primary w-100">Foydalanuvchilarni
+                                        boshqarish</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

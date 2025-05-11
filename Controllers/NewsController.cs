@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VazirlikWeb.Data;
 using VazirlikWeb.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +18,7 @@ namespace VazirlikWeb.Controllers
             _context = context;
         }
 
-        // GET: News
+        // GET: News - Barcha foydalanuvchilar uchun ochiq
         public async Task<IActionResult> Index()
         {
             var newsList = await _context.News
@@ -25,7 +27,7 @@ namespace VazirlikWeb.Controllers
             return View(newsList);
         }
 
-        // GET: News/Details/5
+        // GET: News/Details/5 - Barcha foydalanuvchilar uchun ochiq
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -36,15 +38,17 @@ namespace VazirlikWeb.Controllers
             return View(news);
         }
 
-        // GET: News/Create
+        // GET: News/Create - Faqat Administrator va Editor rollari uchun
+        [Authorize(Roles = "Administrator,Editor")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: News/Create
+        // POST: News/Create - Faqat Administrator va Editor rollari uchun
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Editor")]
         public async Task<IActionResult> Create([Bind("Title,Content,ImageUrl")] News news)
         {
             if (ModelState.IsValid)
@@ -65,7 +69,8 @@ namespace VazirlikWeb.Controllers
             return View(news);
         }
 
-        // GET: News/Edit/5
+        // GET: News/Edit/5 - Faqat Administrator va Editor rollari uchun
+        [Authorize(Roles = "Administrator,Editor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -76,9 +81,10 @@ namespace VazirlikWeb.Controllers
             return View(news);
         }
 
-        // POST: News/Edit/5
+        // POST: News/Edit/5 - Faqat Administrator va Editor rollari uchun
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Editor")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,ImageUrl")] News news)
         {
             if (id != news.Id) return NotFound();
@@ -109,7 +115,8 @@ namespace VazirlikWeb.Controllers
             return View(news);
         }
 
-        // GET: News/Delete/5
+        // GET: News/Delete/5 - Faqat Administrator rollari uchun
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -120,9 +127,10 @@ namespace VazirlikWeb.Controllers
             return View(news);
         }
 
-        // POST: News/Delete/5
+        // POST: News/Delete/5 - Faqat Administrator rollari uchun
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var news = await _context.News.FindAsync(id);
@@ -130,10 +138,20 @@ namespace VazirlikWeb.Controllers
             {
                 _context.News.Remove(news);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Yangilik muvaffaqiyatli o‘chirildi.";  // O‘chirish muvaffaqiyatli
+                TempData["SuccessMessage"] = "Yangilik muvaffaqiyatli o'chirildi.";  // O'chirish muvaffaqiyatli
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: News/Management - Faqat Administrator va Editor rollari uchun
+        [Authorize(Roles = "Administrator,Editor")]
+        public async Task<IActionResult> Management()
+        {
+            var newsList = await _context.News
+                .OrderByDescending(n => n.Date)
+                .ToListAsync();
+            return View(newsList);
         }
 
         private bool NewsExists(int id)

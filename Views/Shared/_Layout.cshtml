@@ -23,8 +23,539 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/VazirlikWeb.styles.css" asp-append-version="true" />
-
     <style>
+        /* Asosiy CSS stili */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4caf50;
+            --info-color: #2196f3;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+        }
+
+        html {
+            position: relative;
+            min-height: 100%;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            color: #444;
+            background-color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Shriftlar */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        /* Havolalar */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        /* Kartalarga stillar */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-bottom: none;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        /* Jadval stili */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(67, 97, 238, 0.03);
+        }
+
+        .table th {
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 15px;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+            transform: scale(1.01);
+        }
+
+        /* Tugmalar */
+        .btn {
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
+            border: none;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg,
+                    var(--secondary-color),
+                    var(--primary-color));
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #2e7d32);
+            border: none;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #2e7d32, var(--success-color));
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info-color), #0d47a1);
+            border: none;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #0d47a1, var(--info-color));
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #e65100);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #e65100, var(--warning-color));
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #b71c1c);
+            border: none;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #b71c1c, var(--danger-color));
+            box-shadow: 0 8px 20px rgba(244, 67, 54, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Form kontrollari */
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        /* Badj */
+        .badge {
+            padding: 8px 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-color);
+        }
+
+        .badge-success {
+            background-color: var(--success-color);
+        }
+
+        .badge-info {
+            background-color: var(--info-color);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background-color: var(--danger-color);
+        }
+
+        /* Bo'lim sarlavhalari */
+        .section-heading {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        .section-heading::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+            border-radius: 2px;
+        }
+
+        /* Maxsus ajratuvchilar */
+        .custom-divider {
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+            margin: 30px 0;
+        }
+
+        /* Rasmlar stili */
+        .img-fluid {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .img-fluid:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Animatsiyalar */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        /* Fon elementlari */
+        .bg-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234361ee' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Panel stili */
+        .panel {
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            background-color: #fff;
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.1);
+        }
+
+        /* Xabar bloki */
+        .alert {
+            border: none;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+
+        .alert-primary {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left-color: var(--success-color);
+            color: var(--success-color);
+        }
+
+        .alert-info {
+            background-color: rgba(33, 150, 243, 0.1);
+            border-left-color: var(--info-color);
+            color: var(--info-color);
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 152, 0, 0.1);
+            border-left-color: var(--warning-color);
+            color: var(--warning-color);
+        }
+
+        .alert-danger {
+            background-color: rgba(244, 67, 54, 0.1);
+            border-left-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        /* Progress bar */
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #f1f1f1;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg,
+                    var(--primary-color),
+                    var(--secondary-color));
+        }
+
+        /* Nav-tabs */
+        .nav-tabs {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            font-weight: 500;
+            padding: 12px 20px;
+            margin-right: 5px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: relative;
+        }
+
+        .nav-tabs .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                    var(--primary-color),
+                    var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+            border-bottom: none;
+        }
+
+        .nav-tabs .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* List-group */
+        .list-group-item {
+            border: none;
+            border-left: 3px solid transparent;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+            border-left-color: var(--primary-color);
+        }
+
+        .list-group-item.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Paginatsiya */
+        .pagination {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .pagination .page-item {
+            margin: 0 3px;
+        }
+
+        .pagination .page-link {
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .pagination .page-link:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
+            color: white;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Tipografiya qo'shimcha stili */
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .text-secondary {
+            color: var(--secondary-color) !important;
+        }
+
+        .text-accent {
+            color: var(--accent-color) !important;
+        }
+
+        .bg-primary-gradient {
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
+            color: white;
+        }
+
+        .bg-light-gradient {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+        }
+
+        /* Soyalar */
+        .shadow-sm {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .shadow-md {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+        }
+
         :root {
             --primary-color: #4361ee;
             --secondary-color: #3f37c9;
@@ -39,7 +570,7 @@
 
         body {
             background-color: #f8f9fa;
-            font-family: 'Montserrat', sans-serif;
+            font-family: "Montserrat", sans-serif;
             color: #444;
             position: relative;
             min-height: 100vh;
@@ -53,7 +584,7 @@
         h4,
         h5,
         h6 {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
             font-weight: 600;
         }
 
@@ -84,7 +615,7 @@
         }
 
         .navbar-brand::after {
-            content: '';
+            content: "";
             position: absolute;
             bottom: 0;
             left: 0;
@@ -157,7 +688,9 @@
         }
 
         .card-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
             color: white;
             font-weight: 600;
             padding: 15px 20px;
@@ -180,7 +713,7 @@
         }
 
         .btn::after {
-            content: '';
+            content: "";
             position: absolute;
             top: 50%;
             left: 50%;
@@ -198,13 +731,17 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
             border: none;
             box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            background: linear-gradient(135deg,
+                    var(--secondary-color),
+                    var(--primary-color));
             box-shadow: 0 8px 20px rgba(67, 97, 238, 0.6);
             transform: translateY(-2px);
         }
@@ -275,7 +812,9 @@
         }
 
         .table th {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--secondary-color));
             color: white;
             font-weight: 600;
             text-transform: uppercase;
@@ -366,7 +905,7 @@
         }
 
         .section-heading::after {
-            content: '';
+            content: "";
             position: absolute;
             bottom: 0;
             left: 0;
@@ -410,7 +949,9 @@
         .bg-shape-1 {
             width: 300px;
             height: 300px;
-            background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, rgba(67, 97, 238, 0) 70%);
+            background: radial-gradient(circle,
+                    rgba(67, 97, 238, 0.1) 0%,
+                    rgba(67, 97, 238, 0) 70%);
             top: -150px;
             right: -100px;
         }
@@ -418,7 +959,9 @@
         .bg-shape-2 {
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(76, 201, 240, 0.1) 0%, rgba(76, 201, 240, 0) 70%);
+            background: radial-gradient(circle,
+                    rgba(76, 201, 240, 0.1) 0%,
+                    rgba(76, 201, 240, 0) 70%);
             bottom: -200px;
             left: -200px;
         }
@@ -434,16 +977,16 @@
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white">
-            <div class="container">
+            <div class="container align-items-center">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="fas fa-gem me-2"></i>VazirlikWeb
+                    <i class="fas fa-gem me-2"></i>VazirlikWeb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">
                                 <i class="fas fa-home"></i> Bosh sahifa
@@ -454,16 +997,81 @@
                                 <i class="fas fa-newspaper"></i> Yangiliklar
                             </a>
                         </li>
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="News" asp-action="Management">
+                                    <i class="fas fa-tasks"></i> Yangiliklar boshqaruvi
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="UserManagement">
+                                    <i class="fas fa-users-cog"></i> Foydalanuvchilar
+                                </a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Privacy">
                                 <i class="fas fa-shield-alt"></i> Maxfiylik
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white ms-2 px-4" href="#">
-                                <i class="fas fa-sign-in-alt"></i> Kirish
-                            </a>
-                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown" style="position:absolute; right:-250px; z-index:1000!important">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle me-1"></i> @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                            <i class="fas fa-id-card me-2"></i>Profil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="EditProfile">
+                                            <i class="fas fa-user-edit me-2"></i>Profilni tahrirlash
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">
+                                            <i class="fas fa-key me-2"></i>Parolni o'zgartirish
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post"
+                                            style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="fas fa-sign-out-alt me-2"></i>Chiqish
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">
+                                    <i class="fas fa-user-plus"></i> Ro'yxatdan o'tish
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary text-white ms-2 px-4" asp-controller="Account"
+                                    asp-action="Login">
+                                    <i class="fas fa-sign-in-alt"></i> Kirish
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
