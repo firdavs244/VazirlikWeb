@@ -62,6 +62,34 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Vc2VyTWFuYWdlbWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/app/Views/Assignment/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzaWdubWVudC9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Views/Assignment/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzaWdubWVudC9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Views/Assignment/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzaWdubWVudC9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Views/Assignment/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzaWdubWVudC9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Views/Assignment/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzaWdubWVudC9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Views/Assignment/Management.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzaWdubWVudC9NYW5hZ2VtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/app/Views/Assignment/MyAssignments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzaWdubWVudC9NeUFzc2lnbm1lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/app/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

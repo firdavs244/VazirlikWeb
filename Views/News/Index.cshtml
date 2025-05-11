@@ -5,62 +5,202 @@
 }
 
 <div class="container mt-5">
+    <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary fw-bold">📰 Yangiliklar ro'yxati</h2>
-        <a asp-action="Create" class="btn btn-success px-4 py-2 fw-bold">
-            ➕ Yangi qo'shish
+        <div class="d-flex align-items-center" data-aos="fade-right" data-aos-duration="800">
+            <div class="bg-primary bg-gradient text-white rounded-circle p-3 me-3">
+                <i class="fas fa-newspaper fa-2x"></i>
+            </div>
+            <h2 class="text-primary fw-bold m-0">Yangiliklar ro'yxati</h2>
+        </div>
+        <a asp-action="Create" class="btn btn-success px-4 py-2 fw-bold shadow-sm" data-aos="fade-left"
+            data-aos-duration="800">
+            <i class="fas fa-plus me-2"></i> Yangi qo'shish
         </a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered shadow-sm rounded-lg bg-white">
-            <thead class="table-dark">
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Title)</th>
-                    <th>@Html.DisplayNameFor(model => model.Content)</th>
-                    <th>@Html.DisplayNameFor(model => model.Date)</th>
-                    <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr class="align-middle">
-                        <td class="fw-semibold">@Html.DisplayFor(modelItem => item.Title)</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(item.Content) && item.Content.Length > 100)
+    <!-- Search and Filter (optional) -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 mb-4" data-aos="fade-up" data-aos-duration="800">
+        <div class="input-group">
+            <span class="input-group-text bg-light border-0">
+                <i class="fas fa-search text-muted"></i>
+            </span>
+            <input type="text" id="searchInput" class="form-control border-0 bg-light"
+                placeholder="Yangiliklar bo'yicha qidirish...">
+        </div>
+    </div>
+
+    <!-- News Cards -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5" id="newsCards">
+        @foreach (var item in Model)
+        {
+            <div class="col" data-aos="fade-up" data-aos-duration="800"
+                data-aos-delay="@(Model.ToList().IndexOf(item) * 100)">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden news-card">
+                    <!-- Card Image -->
+                    <div class="position-relative card-img-container">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" alt="@item.Title" class="card-img-top"
+                                style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="bg-light d-flex justify-content-center align-items-center" style="height: 200px;">
+                                <i class="fas fa-image text-muted fa-3x"></i>
+                            </div>
+                        }
+                        <div class="position-absolute bottom-0 start-0 w-100 p-2 bg-dark bg-opacity-50 text-white">
+                            <small><i class="far fa-calendar-alt me-2"></i>@item.Date.ToString("dd MMM yyyy")</small>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold text-primary mb-3 title-truncate">@item.Title</h5>
+                        <p class="card-text text-muted mb-4 content-truncate">
+                            @if (!string.IsNullOrEmpty(item.Content))
                             {
-                                @(item.Content.Substring(0, 100) + "...")
+                                @(item.Content.Length > 150 ? item.Content.Substring(0, 150) + "..." : item.Content)
                             }
-                            else
-                            {
-                                @item.Content
-                            }
-                        </td>
-                        <td>@item.Date.ToString("dd MMM yyyy")</td>
-                        <td class="text-center">
-                            @if (!string.IsNullOrEmpty(item.ImageUrl))
-                            {
-                                <img src="@item.ImageUrl" alt="Rasm" class="img-fluid"
-                                    style="max-width: 80px; border-radius: 8px;" />
-                            }
-                            else
-                            {
-                                <span class="text-muted">Rasm yo'q</span>
-                            }
-                        </td>
-                        <td>
-                            <div class="d-flex justify-content-around">
-                                <a asp-action="Details" asp-route-id="@item.Id"
-                                    class="btn btn-sm btn-info text-white px-3 py-2 me-2" title="Ko'rish">
-                                    🔍
+                        </p>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer bg-white border-0 pt-0 pb-3 px-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-action="Details" asp-route-id="@item.Id"
+                                class="btn btn-info text-white px-4 py-2 rounded-pill">
+                                <i class="fas fa-eye me-2"></i>Batafsil
+                            </a>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Edit" asp-route-id="@item.Id"
+                                    class="btn btn-outline-warning rounded-circle p-2" title="Tahrirlash">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"
+                                    class="btn btn-outline-danger rounded-circle p-2" title="O'chirish">
+                                    <i class="fas fa-trash"></i>
                                 </a>
                             </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
+
+    <!-- Empty State Message -->
+    @if (!Model.Any())
+    {
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center" data-aos="fade-up">
+            <div class="py-5">
+                <i class="fas fa-newspaper fa-4x text-muted mb-4"></i>
+                <h3 class="fw-bold text-muted">Yangiliklar mavjud emas</h3>
+                <p class="text-muted mb-4">Hozircha yangiliklar qo'shilmagan. Yangi yangilik qo'shish uchun yuqoridagi
+                    tugmani bosing.</p>
+                <a asp-action="Create" class="btn btn-primary px-4 py-2">
+                    <i class="fas fa-plus me-2"></i>Yangilik qo'shish
+                </a>
+            </div>
+        </div>
+    }
+
+    <!-- Pagination (optional) -->
+    <nav aria-label="Sahifalar" class="mt-4 d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Oldingi</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Keyingi</a>
+            </li>
+        </ul>
+    </nav>
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <style>
+        /* Card Hover Effects */
+        .news-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .news-card .card-img-container {
+            overflow: hidden;
+        }
+
+        .news-card:hover .card-img-top {
+            transform: scale(1.05);
+            transition: transform 0.5s ease;
+        }
+
+        /* Text Truncation */
+        .title-truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 3rem;
+        }
+
+        .content-truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 4.5rem;
+        }
+
+        /* Button Effects */
+        .btn {
+            transition: all 0.3s;
+        }
+
+        .btn-outline-warning:hover,
+        .btn-outline-danger:hover {
+            transform: rotate(5deg);
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS animation library
+        AOS.init({
+            once: true,
+            duration: 800,
+            offset: 50
+        });
+
+        // Simple search functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function () {
+                const searchTerm = this.value.toLowerCase();
+                const cards = document.querySelectorAll('#newsCards .col');
+
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    const content = card.querySelector('.card-text').textContent.toLowerCase();
+
+                    if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+}

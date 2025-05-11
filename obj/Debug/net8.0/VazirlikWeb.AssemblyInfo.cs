@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VazirlikWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c1bd7b725dd12419ababe163096e967017bbbd6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9705bed0ed04f94c2e0cc8515b347fc5aa943227")]
 [assembly: System.Reflection.AssemblyProductAttribute("VazirlikWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VazirlikWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

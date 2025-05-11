@@ -1,5 +1,6 @@
 .
 ├── Controllers
+│   ├── AccountController.cs
 │   ├── HomeController.cs
 │   └── NewsController.cs
 ├── Data
@@ -8,8 +9,13 @@
 ├── Migrations
 │   ├── 20250429181406_CreateNewsTable.Designer.cs
 │   ├── 20250429181406_CreateNewsTable.cs
+│   ├── 20250511103652_AddIdentityTables.Designer.cs
+│   ├── 20250511103652_AddIdentityTables.cs
 │   └── ApplicationDbContextModelSnapshot.cs
 ├── Models
+│   ├── AccountViewModels.cs
+│   ├── ApplicationRole.cs
+│   ├── ApplicationUser.cs
 │   ├── ErrorViewModel.cs
 │   └── News.cs
 ├── Program.cs
@@ -18,6 +24,16 @@
 ├── VazirlikWeb.csproj
 ├── VazirlikWeb.sln
 ├── Views
+│   ├── Account
+│   │   ├── AccessDenied.cshtml
+│   │   ├── ChangePassword.cshtml
+│   │   ├── DeleteUser.cshtml
+│   │   ├── EditProfile.cshtml
+│   │   ├── EditUser.cshtml
+│   │   ├── Login.cshtml
+│   │   ├── Profile.cshtml
+│   │   ├── Register.cshtml
+│   │   └── UserManagement.cshtml
 │   ├── Home
 │   │   ├── Index.cshtml
 │   │   └── Privacy.cshtml
@@ -26,7 +42,8 @@
 │   │   ├── Delete.cshtml
 │   │   ├── Details.cshtml
 │   │   ├── Edit.cshtml
-│   │   └── Index.cshtml
+│   │   ├── Index.cshtml
+│   │   └── Management.cshtml
 │   ├── Shared
 │   │   ├── Error.cshtml
 │   │   ├── _Layout.cshtml
@@ -197,4 +214,4 @@
             ├── jquery.validate.unobtrusive.js
             └── jquery.validate.unobtrusive.min.js
 
-37 directories, 161 files
+38 directories, 177 files

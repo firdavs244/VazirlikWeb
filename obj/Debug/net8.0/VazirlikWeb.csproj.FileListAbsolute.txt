@@ -282,13 +282,16 @@
 /mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.dll
 /mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll
 /mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Runtime.Caching.dll
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.UI.dll
+/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/obj/Debug/net8.0/VazirlikWeb.MvcApplicationPartsAssemblyInfo.cs
+/app/bin/Debug/net8.0/publish/web.config
+/app/bin/Debug/net8.0/appsettings.Development.json
+/app/bin/Debug/net8.0/appsettings.json
 /app/bin/Debug/net8.0/publish/appsettings.Development.json
 /app/bin/Debug/net8.0/publish/appsettings.json
 /app/bin/Debug/net8.0/publish/VazirlikWeb.deps.json
 /app/bin/Debug/net8.0/publish/VazirlikWeb.runtimeconfig.json
-/app/bin/Debug/net8.0/publish/web.config
-/app/bin/Debug/net8.0/appsettings.Development.json
-/app/bin/Debug/net8.0/appsettings.json
 /app/bin/Debug/net8.0/VazirlikWeb.staticwebassets.runtime.json
 /app/bin/Debug/net8.0/VazirlikWeb
 /app/bin/Debug/net8.0/VazirlikWeb.deps.json
@@ -298,6 +301,8 @@
 /app/bin/Debug/net8.0/Azure.Core.dll
 /app/bin/Debug/net8.0/Azure.Identity.dll
 /app/bin/Debug/net8.0/Humanizer.dll
+/app/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/app/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.UI.dll
 /app/bin/Debug/net8.0/Microsoft.AspNetCore.Razor.Language.dll
 /app/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
 /app/bin/Debug/net8.0/Microsoft.Build.dll
@@ -546,6 +551,7 @@
 /app/obj/Debug/net8.0/VazirlikWeb.AssemblyInfoInputs.cache
 /app/obj/Debug/net8.0/VazirlikWeb.AssemblyInfo.cs
 /app/obj/Debug/net8.0/VazirlikWeb.csproj.CoreCompileInputs.cache
+/app/obj/Debug/net8.0/VazirlikWeb.MvcApplicationPartsAssemblyInfo.cs
 /app/obj/Debug/net8.0/VazirlikWeb.MvcApplicationPartsAssemblyInfo.cache
 /app/obj/Debug/net8.0/VazirlikWeb.RazorAssemblyInfo.cache
 /app/obj/Debug/net8.0/VazirlikWeb.RazorAssemblyInfo.cs
@@ -566,9 +572,3 @@
 /app/obj/Debug/net8.0/VazirlikWeb.pdb
 /app/obj/Debug/net8.0/VazirlikWeb.genruntimeconfig.cache
 /app/obj/Debug/net8.0/ref/VazirlikWeb.dll
-/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.UI.dll
-/mnt/c/Users/Firdavs/Desktop/VazirlikWeb/obj/Debug/net8.0/VazirlikWeb.MvcApplicationPartsAssemblyInfo.cs
-/app/obj/Debug/net8.0/VazirlikWeb.MvcApplicationPartsAssemblyInfo.cs
-/app/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-/app/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.UI.dll

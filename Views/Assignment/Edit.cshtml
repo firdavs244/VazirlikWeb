@@ -1,0 +1,116 @@
+@model VazirlikWeb.Models.Assignment
+@{
+    ViewData["Title"] = "Topshiriqni tahrirlash";
+}
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col">
+            <h1>@ViewData["Title"]</h1>
+            <h4>Topshiriq ID: @Model.Id</h4>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label"></label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StartDate" class="form-label"></label>
+                                <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DueDate" class="form-label"></label>
+                                <input asp-for="DueDate" class="form-control" type="datetime-local" />
+                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Status" class="form-label"></label>
+                                <select asp-for="Status" asp-items="Html.GetEnumSelectList<AssignmentStatus>()"
+                                    class="form-select"></select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Priority" class="form-label"></label>
+                                <select asp-for="Priority" asp-items="Html.GetEnumSelectList<AssignmentPriority>()"
+                                    class="form-select"></select>
+                                <span asp-validation-for="Priority" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AssignedToId" class="form-label">Bajaruvchi</label>
+                            <select asp-for="AssignedToId" asp-items="ViewBag.Users" class="form-select">
+                                <option value="">-- Bajaruvchini tanlang --</option>
+                            </select>
+                            <span asp-validation-for="AssignedToId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Saqlash
+                            </button>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">
+                                <i class="bi bi-eye"></i> Ko'rish
+                            </a>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Orqaga
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0"><i class="bi bi-clock-history"></i> Tarix ma'lumotlari</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-6">Yaratilgan:</dt>
+                        <dd class="col-sm-6">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-6">Yangilangan:</dt>
+                        <dd class="col-sm-6">@Model.UpdatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                        @if (Model.CompletedDate.HasValue)
+                        {
+                            <dt class="col-sm-6">Bajarilgan:</dt>
+                            <dd class="col-sm-6">@Model.CompletedDate.Value.ToString("dd.MM.yyyy HH:mm")</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

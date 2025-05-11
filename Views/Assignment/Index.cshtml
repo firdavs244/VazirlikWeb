@@ -1,0 +1,304 @@
+@model IEnumerable<VazirlikWeb.Models.Assignment>
+@using VazirlikWeb.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Topshiriqlar ro'yxati";
+    var currentUser = await UserManager.GetUserAsync(User);
+    var isAdmin = await UserManager.IsInRoleAsync(currentUser, "Administrator");
+    var isEditor = await UserManager.IsInRoleAsync(currentUser, "Editor");
+    var canManage = isAdmin || isEditor;
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-lg mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="bi bi-clipboard-check me-2"></i>@ViewData["Title"]
+                    </h3>
+                </div>
+                <div class="card-body px-4 py-3">
+                    <!-- Amallar paneli -->
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="d-flex flex-wrap gap-2">
+                                @if (canManage)
+                                {
+                                    <a asp-action="Create" class="btn btn-success fw-semibold">
+                                        <i class="bi bi-plus-circle me-1"></i> Yangi topshiriq
+                                    </a>
+                                    <a asp-action="Management" class="btn btn-secondary fw-semibold">
+                                        <i class="bi bi-gear-fill me-1"></i> Boshqaruv paneli
+                                    </a>
+                                }
+                                <a asp-action="MyAssignments" class="btn btn-info text-white fw-semibold">
+                                    <i class="bi bi-person-check me-1"></i> Mening topshiriqlarim
+                                </a>
+                                
+                                <!-- Qidiruv paneli -->
+                                <div class="ms-auto">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Topshiriqni qidirish...">
+                                        <button class="btn btn-outline-primary" type="button">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter paneli -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border shadow-sm">
+                                <div class="card-body py-3">
+                                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                                        <span class="fw-semibold text-muted me-2">Filterlash:</span>
+                                        <select class="form-select form-select-sm w-auto">
+                                            <option selected>Barcha holatlar</option>
+                                            <option>Yangi</option>
+                                            <option>Bajarilmoqda</option>
+                                            <option>Ko'rib chiqilmoqda</option>
+                                            <option>Bajarildi</option>
+                                            <option>Kechiktirildi</option>
+                                            <option>Bekor qilindi</option>
+                                        </select>
+                                        <select class="form-select form-select-sm w-auto">
+                                            <option selected>Barcha muhimlik darajalari</option>
+                                            <option>Past</option>
+                                            <option>O'rta</option>
+                                            <option>Yuqori</option>
+                                            <option>Juda muhim</option>
+                                        </select>
+                                        <input type="date" class="form-control form-control-sm w-auto" placeholder="Sanadan">
+                                        <input type="date" class="form-control form-control-sm w-auto" placeholder="Sanagacha">
+                                        <button class="btn btn-sm btn-primary ms-auto">
+                                            <i class="bi bi-funnel me-1"></i> Qo'llash
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-x-circle me-1"></i> Tozalash
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topshiriqlar jadvali -->
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light text-muted">
+                                    <tr>
+                                        <th class="fw-semibold">@Html.DisplayNameFor(model => model.Title)</th>
+                                        <th class="fw-semibold">@Html.DisplayNameFor(model => model.Status)</th>
+                                        <th class="fw-semibold">@Html.DisplayNameFor(model => model.Priority)</th>
+                                        <th class="fw-semibold">@Html.DisplayNameFor(model => model.DueDate)</th>
+                                        <th class="fw-semibold">@Html.DisplayNameFor(model => model.AssignedTo)</th>
+                                        <th class="fw-semibold text-center">Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr class="@(IsOverdue(item) ? "table-danger bg-opacity-25" : "")">
+                                            <td class="fw-medium">@Html.DisplayFor(modelItem => item.Title)</td>
+                                            <td>
+                                                <span class="badge rounded-pill @GetStatusBadgeClass(item.Status)">
+                                                    @GetStatusName(item.Status)
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill @GetPriorityBadgeClass(item.Priority)">
+                                                    @GetPriorityName(item.Priority)
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if (IsOverdue(item))
+                                                {
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-exclamation-triangle-fill text-danger me-1"></i>
+                                                        <span class="fw-semibold text-danger">@item.DueDate.ToString("dd.MM.yyyy")</span>
+                                                    </div>
+                                                }
+                                                else if (IsUrgent(item))
+                                                {
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-clock-history text-warning me-1"></i>
+                                                        <span class="fw-semibold">@item.DueDate.ToString("dd.MM.yyyy")</span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <span>@item.DueDate.ToString("dd.MM.yyyy")</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.AssignedTo != null)
+                                                {
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                                                            @(item.AssignedTo.FirstName[0].ToString().ToUpper() + item.AssignedTo.LastName[0].ToString().ToUpper())
+                                                        </div>
+                                                        <span>@(item.AssignedTo.FirstName + " " + item.AssignedTo.LastName)</span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted fst-italic">Tayinlanmagan</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-center gap-1">
+                                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Batafsil">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                    @if (canManage)
+                                                    {
+                                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Tahrirlash">
+                                                            <i class="bi bi-pencil-fill"></i>
+                                                        </a>
+                                                        @if (isAdmin)
+                                                        {
+                                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="O'chirish">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                            </a>
+                                                        }
+                                                    }
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                            <i class="bi bi-three-dots"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a class="dropdown-item" href="#"><i class="bi bi-check-circle me-2"></i>Bajarildi deb belgilash</a></li>
+                                                            <li><a class="dropdown-item" href="#"><i class="bi bi-arrow-right-circle me-2"></i>Boshqa foydalanuvchiga o'tkazish</a></li>
+                                                            <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-text me-2"></i>Hisobot yuklash</a></li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li><a class="dropdown-item" href="#"><i class="bi bi-chat-left-text me-2"></i>Izoh qoldirish</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Sahifalash -->
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <div class="text-muted">
+                                Jami: <span class="fw-bold">@Model.Count()</span> ta topshiriq
+                            </div>
+                            <nav aria-label="...">
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <div class="d-flex">
+                                <i class="bi bi-info-circle-fill fs-3 me-2"></i>
+                                <div>
+                                    <h5>Topshiriqlar mavjud emas</h5>
+                                    <p class="mb-0">Hozircha tizimda topshiriqlar mavjud emas. Yangi topshiriq qo'shish uchun "Yangi topshiriq" tugmasini bosing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Tooltip inizializatsiyasi
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
+
+@functions {
+    string GetStatusBadgeClass(AssignmentStatus status)
+    {
+        return status switch
+        {
+            AssignmentStatus.New => "bg-secondary",
+            AssignmentStatus.InProgress => "bg-primary",
+            AssignmentStatus.UnderReview => "bg-info",
+            AssignmentStatus.Completed => "bg-success",
+            AssignmentStatus.Delayed => "bg-warning text-dark",
+            AssignmentStatus.Cancelled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusName(AssignmentStatus status)
+    {
+        return status switch
+        {
+            AssignmentStatus.New => "Yangi",
+            AssignmentStatus.InProgress => "Bajarilmoqda",
+            AssignmentStatus.UnderReview => "Ko'rib chiqilmoqda",
+            AssignmentStatus.Completed => "Bajarildi",
+            AssignmentStatus.Delayed => "Kechiktirildi",
+            AssignmentStatus.Cancelled => "Bekor qilindi",
+            _ => status.ToString()
+        };
+    }
+
+    string GetPriorityBadgeClass(AssignmentPriority priority)
+    {
+        return priority switch
+        {
+            AssignmentPriority.Low => "bg-secondary",
+            AssignmentPriority.Medium => "bg-primary",
+            AssignmentPriority.High => "bg-warning text-dark",
+            AssignmentPriority.Urgent => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+    
+    string GetPriorityName(AssignmentPriority priority)
+    {
+        return priority switch
+        {
+            AssignmentPriority.Low => "Past",
+            AssignmentPriority.Medium => "O'rta",
+            AssignmentPriority.High => "Yuqori",
+            AssignmentPriority.Urgent => "Juda muhim",
+            _ => priority.ToString()
+        };
+    }
+
+    bool IsOverdue(Assignment assignment)
+    {
+        return assignment.DueDate < DateTime.Today && assignment.Status != AssignmentStatus.Completed && assignment.Status != AssignmentStatus.Cancelled;
+    }
+    
+    bool IsUrgent(Assignment assignment)
+    {
+        return (assignment.DueDate - DateTime.Today).TotalDays <= 2 && assignment.Status != AssignmentStatus.Completed && assignment.Status != AssignmentStatus.Cancelled;
+    }
+}

@@ -1,0 +1,111 @@
+@model VazirlikWeb.Models.Assignment
+@{
+    ViewData["Title"] = "Topshiriqni o'chirish";
+}
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col">
+            <h1>@ViewData["Title"]</h1>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0"><i class="bi bi-exclamation-triangle"></i> Diqqat!</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <p><strong>Siz ushbu topshiriqni tizimdan butunlay o'chirmoqchimisiz?</strong></p>
+                        <p>Bu amalni qaytarib bo'lmaydi va topshiriq bilan bog'liq barcha ma'lumotlar o'chiriladi.</p>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Id)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Id)</dd>
+
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Title)</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Title)</dd>
+
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Status)</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge rounded-pill @GetStatusBadgeClass(Model.Status)">
+                                @Html.DisplayFor(model => model.Status)
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Priority)</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge rounded-pill @GetPriorityBadgeClass(Model.Priority)">
+                                @Html.DisplayFor(model => model.Priority)
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CreatedBy)</dt>
+                        <dd class="col-sm-8">@(Model.CreatedBy.FirstName + " " + Model.CreatedBy.LastName)</dd>
+
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AssignedTo)</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.AssignedTo != null)
+                            {
+                                @(Model.AssignedTo.FirstName + " " + Model.AssignedTo.LastName)
+                            }
+                            else
+                            {
+                                <span class="text-muted">Tayinlanmagan</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+                        <dd class="col-sm-8">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+                    </dl>
+
+                    <form asp-action="Delete" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Topshiriqni o\'chirishni tasdiqlaysizmi?')">
+                                <i class="bi bi-trash"></i> O'chirish
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Bekor qilish
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(AssignmentStatus status)
+    {
+        return status switch
+        {
+            AssignmentStatus.New => "bg-secondary",
+            AssignmentStatus.InProgress => "bg-primary",
+            AssignmentStatus.UnderReview => "bg-info",
+            AssignmentStatus.Completed => "bg-success",
+            AssignmentStatus.Delayed => "bg-warning text-dark",
+            AssignmentStatus.Cancelled => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetPriorityBadgeClass(AssignmentPriority priority)
+    {
+        return priority switch
+        {
+            AssignmentPriority.Low => "bg-secondary",
+            AssignmentPriority.Medium => "bg-primary",
+            AssignmentPriority.High => "bg-warning text-dark",
+            AssignmentPriority.Urgent => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1013,6 +1013,14 @@
                                 </a>
                             </li>
                         }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Assignment" asp-action="Index">
+                                    <i class="fas fa-tasks"></i> Topshiriqlar
+                                </a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Privacy">
                                 <i class="fas fa-shield-alt"></i> Maxfiylik

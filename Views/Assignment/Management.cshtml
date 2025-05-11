@@ -1,0 +1,526 @@
+@model IEnumerable<VazirlikWeb.Models.Assignment>
+@using Microsoft.AspNetCore.Identity
+@using VazirlikWeb.Models
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Topshiriqlar boshqaruvi";
+    var currentUser = await UserManager.GetUserAsync(User);
+    
+    // Controller tomonidan yuborilgan lug'atlarni olish
+    var statusColors = ViewBag.StatusColors as Dictionary<AssignmentStatus, string> ?? new();
+    var priorityIcons = ViewBag.PriorityIcons as Dictionary<AssignmentPriority, string> ?? new();
+    var priorityNames = ViewBag.PriorityNames as Dictionary<AssignmentPriority, string> ?? new();
+    var statusNames = ViewBag.StatusNames as Dictionary<AssignmentStatus, string> ?? new();
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4 mb-4">@ViewData["Title"]</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h5 class="m-0 font-weight-bold text-primary">Topshiriqlar ro'yxati</h5>
+            <div>
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus mr-1"></i> Yangi topshiriq
+                </a>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="filterToggleBtn">
+                    <i class="fas fa-filter mr-1"></i> Filtrlar
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="filterPanel" class="mb-4 p-3 border rounded bg-light" style="display:none;">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="statusFilter" class="form-label">Status</label>
+                        <select id="statusFilter" class="form-select">
+                            <option value="">Barchasi</option>
+                            @if (statusNames != null)
+                            {
+                                foreach (var status in Enum.GetValues(typeof(AssignmentStatus)))
+                                {
+                                    <option value="@((int)status)">
+                                        @statusNames.ContainsKey((AssignmentStatus)status)
+                                            ? statusNames[(AssignmentStatus)status]
+                                            : "Noma'lum"
+                                    </option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="">Status nomlari topilmadi</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="priorityFilter" class="form-label">Muhimlik</label>
+                        <select id="priorityFilter" class="form-select">
+                            <option value="">Barchasi</option>
+                            @foreach (var priority in Enum.GetValues(typeof(AssignmentPriority)))
+                            {
+                                <option value="@((int)priority)">@priorityNames[(AssignmentPriority)priority]</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="assigneeFilter" class="form-label">Bajaruvchi</label>
+                        <select id="assigneeFilter" class="form-select">
+                            <option value="">Barchasi</option>
+                            @{
+                                var assignees = Model.Select(a => new { a.AssignedToId, Name = $"{a.AssignedTo.LastName} {a.AssignedTo.FirstName}" })
+                                                   .Distinct()
+                                                   .OrderBy(a => a.Name);
+                                foreach (var assignee in assignees)
+                                {
+                                    <option value="@assignee.AssignedToId">@assignee.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="dateRangeFilter" class="form-label">Sana oralig'i</label>
+                        <div class="input-group">
+                            <input type="date" id="startDateFilter" class="form-control form-control-sm">
+                            <span class="input-group-text">-</span>
+                            <input type="date" id="endDateFilter" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12 text-end">
+                        <button id="applyFilters" class="btn btn-sm btn-primary">Qo'llash</button>
+                        <button id="resetFilters" class="btn btn-sm btn-secondary">Tozalash</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="assignmentsTable" class="table table-bordered table-hover" width="100%" cellspacing="0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 20%;">Sarlavha</th>
+                            <th style="width: 12%;">Status</th>
+                            <th style="width: 10%;">Muhimlik</th>
+                            <th style="width: 15%;">Bajaruvchi</th>
+                            <th style="width: 10%;">Muddati</th>
+                            <th style="width: 10%;">Yaratilgan</th>
+                            <th style="width: 18%;">Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var isPastDue = item.Status != AssignmentStatus.Completed && item.Status != AssignmentStatus.Cancelled && item.DueDate < DateTime.UtcNow;
+                            var assigneeName = $"{item.AssignedTo?.LastName} {item.AssignedTo?.FirstName}";
+                            
+                            <tr class="@(isPastDue ? "table-danger" : "")">
+                                <td>@item.Id</td>
+                                <td>
+                                    <strong class="d-block text-truncate" style="max-width: 200px;" title="@item.Title">@item.Title</strong>
+                                    <small class="text-muted d-block text-truncate" style="max-width: 200px;" title="@item.Description">@item.Description</small>
+                                </td>
+                                <td>
+                                    <span class="badge @(statusColors != null ? statusColors[item.Status] : "bg-secondary")">
+                                        @(statusNames != null ? statusNames[item.Status] : item.Status.ToString())
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="d-flex align-items-center">
+                                        <i class="fas @(priorityIcons != null ? priorityIcons[item.Priority] : "fa-circle") me-1"></i>
+                                        @(priorityNames != null ? priorityNames[item.Priority] : item.Priority.ToString())
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-secondary text-white me-2">
+                                            @if (!string.IsNullOrEmpty(assigneeName))
+                                            {
+                                                @assigneeName.Split(' ').Where(s => !string.IsNullOrEmpty(s)).Select(s => s[0]).FirstOrDefault()
+                                            }
+                                        </div>
+                                        <div class="text-truncate" style="max-width: 120px;" title="@assigneeName">@assigneeName</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="@(isPastDue ? "text-danger fw-bold" : "")">
+                                        @item.DueDate.ToString("dd.MM.yyyy")
+                                    </span>
+                                </td>
+                                <td>
+                                    <small>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-tasks"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                @foreach (AssignmentStatus status in Enum.GetValues(typeof(AssignmentStatus)))
+                                                {
+                                                    if (item.Status != status)
+                                                    {
+                                                        <li>
+                                                            <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                                                <input type="hidden" name="id" value="@item.Id" />
+                                                                <input type="hidden" name="status" value="@status" />
+                                                                @Html.AntiForgeryToken()
+                                                                <button type="submit" class="dropdown-item">
+                                                                    <span class="badge @statusColors[status] me-2">⬤</span>
+                                                                    @(statusNames != null ? statusNames[status] : status.ToString())
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                        @if (User.IsInRole("Administrator"))
+                                        {
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-primary shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Status bo'yicha</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-2">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-info shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-info">Muhimlik bo'yicha</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-2">
+                        <canvas id="priorityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-12">
+            <div class="card border-left-success shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-success">Bajaruvchilar reytingi</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar pt-2">
+                        <canvas id="assigneeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css">
+    <style>
+        .avatar-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .border-left-primary {
+            border-left: 5px solid #4e73df !important;
+        }
+
+        .border-left-success {
+            border-left: 5px solid #1cc88a !important;
+        }
+
+        .border-left-info {
+            border-left: 5px solid #36b9cc !important;
+        }
+
+        .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // DataTable inizialatsiyasi
+            var table = $('#assignmentsTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Uzbek.json'
+                },
+                ordering: true,
+                responsive: true,
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Barchasi"]],
+                dom: '<"d-flex justify-content-between align-items-center mb-3"<"d-flex align-items-center"l><"d-flex"f>>rtip'
+            });
+
+            // Filter panel ko'rsatish/yashirish
+            $('#filterToggleBtn').click(function () {
+                $('#filterPanel').slideToggle();
+            });
+
+            // Filter qo'llash
+            $('#applyFilters').click(function () {
+                const status = $('#statusFilter').val();
+                const priority = $('#priorityFilter').val();
+                const assignee = $('#assigneeFilter').val();
+                const startDate = $('#startDateFilter').val();
+                const endDate = $('#endDateFilter').val();
+
+                // Custom filtrlarni qo'llash
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        let match = true;
+
+                        // Status bo'yicha filtrlash
+                        if (status && !data[2].includes(status)) {
+                            match = false;
+                        }
+
+                        // Muhimlik bo'yicha filtrlash
+                        if (priority && !data[3].includes(priority)) {
+                            match = false;
+                        }
+
+                        // Bajaruvchi bo'yicha filtrlash
+                        if (assignee && !data[4].includes(assignee)) {
+                            match = false;
+                        }
+
+                        // Sana bo'yicha filtrlash
+                        if (startDate || endDate) {
+                            const rowDate = new Date(data[5].split('.').reverse().join('-'));
+                            
+                            if (startDate && new Date(startDate) > rowDate) {
+                                match = false;
+                            }
+                            
+                            if (endDate && new Date(endDate) < rowDate) {
+                                match = false;
+                            }
+                        }
+
+                        return match;
+                    }
+                );
+
+                table.draw();
+                
+                // Filtrlarni tozalash
+                $.fn.dataTable.ext.search.pop();
+            });
+
+            // Filtrlarni qayta o'rnatish
+            $('#resetFilters').click(function () {
+                $('#statusFilter').val('');
+                $('#priorityFilter').val('');
+                $('#assigneeFilter').val('');
+                $('#startDateFilter').val('');
+                $('#endDateFilter').val('');
+                table.search('').columns().search('').draw();
+            });
+
+            // Status diagrammasi
+            const statusCounts = {
+                '0': @Model.Count(a => a.Status == AssignmentStatus.New),
+                '1': @Model.Count(a => a.Status == AssignmentStatus.InProgress),
+                '2': @Model.Count(a => a.Status == AssignmentStatus.UnderReview), // ✅
+                '3': @Model.Count(a => a.Status == AssignmentStatus.Completed),
+                '4': @Model.Count(a => a.Status == AssignmentStatus.Cancelled)
+            };
+
+
+            const statusColors = {
+                '0': '#4e73df', // New
+                '1': '#36b9cc', // InProgress
+                '2': '#f6c23e', // UnderReview
+                '3': '#1cc88a', // Completed
+                '4': '#e74a3b'  // Cancelled
+            };
+
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Yangi', 'Bajarilmoqda', 'Kutilmoqda', 'Bajarilgan', 'Bekor qilingan'],
+                    datasets: [{
+                        data: Object.values(statusCounts),
+                        backgroundColor: Object.values(statusColors),
+                        hoverBackgroundColor: Object.values(statusColors).map(c => c + 'dd'),
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Muhimlik diagrammasi
+            const priorityCounts = {
+                '0': @Model.Count(a => a.Priority == AssignmentPriority.Low),
+                '1': @Model.Count(a => a.Priority == AssignmentPriority.Medium),
+                '2': @Model.Count(a => a.Priority == AssignmentPriority.High)
+            };
+
+            const priorityColors = {
+                '0': '#1cc88a', // Low
+                '1': '#f6c23e', // Medium
+                '2': '#e74a3b'  // High
+            };
+
+            const priorityCtx = document.getElementById('priorityChart').getContext('2d');
+            new Chart(priorityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Past', 'O\'rta', 'Yuqori'],
+                    datasets: [{
+                        data: Object.values(priorityCounts),
+                        backgroundColor: Object.values(priorityColors),
+                        hoverBackgroundColor: Object.values(priorityColors).map(c => c + 'dd'),
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Bajaruvchilar reytingi
+            const assigneeCounts = {};
+            const assigneeNames = {};
+            
+            @foreach (var item in Model)
+            {
+                if (item.AssignedToId != null)
+                {
+                    <text>
+                    if (!assigneeCounts['@item.AssignedToId']) {
+                        assigneeCounts['@item.AssignedToId'] = {
+                            total: 0,
+                            completed: 0
+                        };
+                        assigneeNames['@item.AssignedToId'] = '@(item.AssignedTo?.LastName) @(item.AssignedTo?.FirstName)';
+                    }
+                    
+                    assigneeCounts['@item.AssignedToId'].total++;
+                    
+                    if (parseInt('@((int)item.Status)') === 3) { // 3 = Completed
+                        assigneeCounts['@item.AssignedToId'].completed++;
+                    }
+                    </text>
+                }
+            }
+
+            // Eng ko'p topshiriq olgan top 5 bajaruvchilar
+            const topAssignees = Object.keys(assigneeCounts)
+                .sort((a, b) => assigneeCounts[b].total - assigneeCounts[a].total)
+                .slice(0, 5);
+            
+            const assigneeLabels = topAssignees.map(id => assigneeNames[id]);
+            const assigneeData = topAssignees.map(id => assigneeCounts[id].total);
+            const completedData = topAssignees.map(id => assigneeCounts[id].completed);
+            
+            const assigneeCtx = document.getElementById('assigneeChart').getContext('2d');
+            new Chart(assigneeCtx, {
+                type: 'bar',
+                data: {
+                    labels: assigneeLabels,
+                    datasets: [
+                        {
+                            label: 'Jami',
+                            backgroundColor: '#4e73df',
+                            data: assigneeData,
+                            maxBarThickness: 25,
+                        },
+                        {
+                            label: 'Bajarilgan',
+                            backgroundColor: '#1cc88a',
+                            data: completedData,
+                            maxBarThickness: 25,
+                        }
+                    ],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    // Uzun ismlarni qisqartirish
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 10) {
+                                        return label.substring(0, 10) + '...';
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}
